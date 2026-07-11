@@ -11,8 +11,8 @@ I can see what is left at a glance.
 | config + secrets | done |
 | Gemini seam (llm.py) | done |
 | commitment extractor | done |
+| promise store (sqlite) | done |
 | Slack app in the sandbox | todo |
-| promise store (sqlite) | todo |
 | confirm card + track flow | todo |
 | ledger canvas | todo |
 | nudge scheduler | todo |
@@ -23,6 +23,20 @@ I can see what is left at a glance.
 | demo data + polish | todo |
 
 ## Notes
+
+### 7 Jul, promise store
+
+store.py, the little SQLite memory. Two tables: channels (with their ledger canvas
+id) and promises (description, owner, due date, status, reschedule count, source
+link). Only confirmed structured promises go in here, no raw messages.
+
+One connection per call so it is safe across the app thread and the scheduler
+thread. Every query is parameterised, no string-built SQL. A nudged_at column means
+we never nudge the same promise twice, and a reschedule clears it so the new date
+can nudge again. Self-check at the bottom proves add, read, nudge-once, reschedule,
+and keep all behave.
+
+Also got the repo live: github.com/Satendra-byte/Kept, public, under my account.
 
 ### 7 Jul, commitment extractor
 

@@ -13,3 +13,7 @@ kept.db
 
 # os
 .DS_Store
+
+# local-only, kept off GitHub
+CLAUDE.md
+mockup/

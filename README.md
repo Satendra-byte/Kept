@@ -47,4 +47,4 @@ python -m backend.app
 
 ## Team
 
-Satendra Tiwari, Sachin Tiwari, Debarghya Pal. Team name: Hearsay.
+Satendra Tiwari, with Sachin Tiwari and Debarghya Pal.
