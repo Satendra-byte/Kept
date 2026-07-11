@@ -40,10 +40,8 @@ python -m backend.app
 | `docs/ARCHITECTURE.md` | Technical design: components, data model, event flow |
 | `docs/SECURITY.md` | Threat model, controls, and the prompt-injection posture |
 | `BUILDLOG.md` | What is built and changed. Feature status table |
-| `CLAUDE.md` | House rules for the repo |
 | `manifest.json` | Slack app configuration |
 | `backend/` | The app |
-| `mockup/` | Interactive design reference (not shipped) |
 
 ## Team
 

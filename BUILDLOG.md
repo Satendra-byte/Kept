@@ -24,6 +24,14 @@ I can see what is left at a glance.
 
 ## Notes
 
+### 7 Jul, the confirm card
+
+blocks.py, the Block Kit builders. confirm_blocks makes the private "Track it?"
+card, nudge_blocks makes the deadline DM. The buttons only ever carry the promise
+id, never the promise text, so a tampered click cannot sneak in a fake promise.
+This file is pure, no secrets, so `python -m backend.blocks` runs its self-check
+standalone. It passes.
+
 ### 7 Jul, promise store
 
 store.py, the little SQLite memory. Two tables: channels (with their ledger canvas
