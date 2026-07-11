@@ -14,7 +14,7 @@ I can see what is left at a glance.
 | promise store (sqlite) | done |
 | Slack app in the sandbox | done |
 | confirm card + track flow | done, works live |
-| ledger canvas | todo |
+| ledger canvas | done |
 | nudge scheduler | todo |
 | delay-message drafter | todo |
 | weekly update drafter | todo, nice to have |
@@ -23,6 +23,35 @@ I can see what is left at a glance.
 | demo data + polish | todo |
 
 ## Notes
+
+### 7 Jul, tuning the extractor and killing duplicates
+
+Two things from live testing. One, the extractor was too strict, it skipped "we need
+to talk Monday" because it was not a formal deliverable. Loosened the bar to "any
+concrete thing the author will do" and let the human tap decide, questions and chat
+still get dropped. Two, it got weekdays wrong (Monday came back as the 14th, a
+Tuesday) because the model was doing calendar math. Now we hand it the real dates for
+the week and it looks the day up. Verified both against Gemini: Friday is the 10th,
+Monday is the 13th.
+
+Also a dedup guard in the store: an exact repeat (same owner, wording, date, still
+open) returns the existing row instead of a second one, so the ledger stops showing
+the same promise twice. Canvas confirmed rendering live, tables and links and all.
+
+### 7 Jul, the ledger canvas
+
+ledger.py. The Promise Ledger is a canvas pinned to the channel. render() turns the
+stored promises into markdown, an Open table and a Kept table, and sync() pushes it
+to Slack.
+
+The tidy part: Slack lets you replace a whole canvas in one canvases.edit call with
+no section id, so Kept regenerates the full document every time instead of patching
+rows. Create it once with conversations.canvases.create, edit it after. Verified both
+method names exist in the installed slack_sdk and take json bodies before writing it.
+
+Wired into Track. If the canvas call fails the promise is still stored, so the canvas
+just catches up on the next one. render() is pure with a standalone self-check
+(pipe-escaping, date trim, empty state), which passes.
 
 ### 7 Jul, first live run, the loop works
 

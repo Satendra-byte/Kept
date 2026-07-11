@@ -6,7 +6,7 @@ from datetime import date
 from slack_bolt import App
 from slack_bolt.adapter.socket_mode import SocketModeHandler
 
-from backend import blocks, config, extractor, store
+from backend import blocks, config, extractor, ledger, store
 
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger("kept")
@@ -68,6 +68,11 @@ def on_track(ack, body, client, respond):
         data["channel_id"], data["owner_id"], data["owner_name"],
         data["description"], data["due_date"], _permalink(client, data["channel_id"], data["source_ts"]),
     )
+    try:
+        ledger.sync(client, data["channel_id"])
+    except Exception:
+        # the promise is already stored; the canvas catches up on the next track
+        log.exception("ledger sync failed")
     due = data["due_date"] or "no date"
     respond(replace_original=True, text=f'Tracked. "{data["description"]}" is in the ledger, due {due}.')
 

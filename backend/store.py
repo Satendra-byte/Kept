@@ -77,6 +77,15 @@ def get_canvas(channel_id: str) -> str | None:
 
 def add_promise(channel_id, owner_id, owner_name, description, due_date, source_permalink) -> int:
     with _db() as c:
+        # skip an exact repeat: same owner, same wording, same date, still open here.
+        # ponytail: exact match only, a reworded promise still makes a new row, fine.
+        dupe = c.execute(
+            "SELECT id FROM promises WHERE channel_id=? AND owner_id=? AND description=? "
+            "AND due_date IS ? AND status='open'",
+            (channel_id, owner_id, description, due_date),
+        ).fetchone()
+        if dupe:
+            return dupe["id"]
         cur = c.execute(
             "INSERT INTO promises (channel_id, owner_id, owner_name, description, due_date, "
             "source_permalink, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)",
@@ -142,6 +151,9 @@ if __name__ == "__main__":
     pid = add_promise("C1", "U1", "Sachin", "revised deck", "2026-07-10", "http://x")
     assert get(pid)["description"] == "revised deck"
     assert get(pid)["status"] == "open"
+
+    # an exact repeat while open returns the same row instead of duplicating
+    assert add_promise("C1", "U1", "Sachin", "revised deck", "2026-07-10", "http://y") == pid
 
     assert len(get_due_for_nudge("2026-07-10")) == 1
     mark_nudged(pid)
