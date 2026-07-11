@@ -39,6 +39,7 @@ def init_db() -> None:
                 owner_id         TEXT NOT NULL,
                 owner_name       TEXT NOT NULL,
                 description      TEXT NOT NULL,
+                recipient        TEXT,
                 due_date         TEXT,
                 status           TEXT NOT NULL DEFAULT 'open',
                 source_permalink TEXT,
@@ -49,6 +50,10 @@ def init_db() -> None:
             );
             """
         )
+        # migrate a db created before the recipient column existed
+        cols = [r["name"] for r in c.execute("PRAGMA table_info(promises)").fetchall()]
+        if "recipient" not in cols:
+            c.execute("ALTER TABLE promises ADD COLUMN recipient TEXT")
 
 
 # channels and their ledger canvas
@@ -75,7 +80,8 @@ def get_canvas(channel_id: str) -> str | None:
 
 # promises
 
-def add_promise(channel_id, owner_id, owner_name, description, due_date, source_permalink) -> int:
+def add_promise(channel_id, owner_id, owner_name, description, due_date, source_permalink,
+                recipient=None) -> int:
     with _db() as c:
         # skip an exact repeat: same owner, same wording, same date, still open here.
         # ponytail: exact match only, a reworded promise still makes a new row, fine.
@@ -87,9 +93,10 @@ def add_promise(channel_id, owner_id, owner_name, description, due_date, source_
         if dupe:
             return dupe["id"]
         cur = c.execute(
-            "INSERT INTO promises (channel_id, owner_id, owner_name, description, due_date, "
-            "source_permalink, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)",
-            (channel_id, owner_id, owner_name, description, due_date, source_permalink, _now()),
+            "INSERT INTO promises (channel_id, owner_id, owner_name, description, recipient, "
+            "due_date, source_permalink, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+            (channel_id, owner_id, owner_name, description, recipient, due_date,
+             source_permalink, _now()),
         )
         return cur.lastrowid
 
@@ -148,8 +155,9 @@ if __name__ == "__main__":
     config.DB_PATH = os.path.join(tempfile.gettempdir(), "kept_selfcheck.db")
     init_db()
 
-    pid = add_promise("C1", "U1", "Sachin", "revised deck", "2026-07-10", "http://x")
+    pid = add_promise("C1", "U1", "Sachin", "revised deck", "2026-07-10", "http://x", recipient="Priya")
     assert get(pid)["description"] == "revised deck"
+    assert get(pid)["recipient"] == "Priya"
     assert get(pid)["status"] == "open"
 
     # an exact repeat while open returns the same row instead of duplicating

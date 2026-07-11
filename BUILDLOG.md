@@ -15,6 +15,7 @@ I can see what is left at a glance.
 | Slack app in the sandbox | done |
 | confirm card + track flow | done, works live |
 | ledger canvas | done |
+| recipient (to column) | done |
 | nudge scheduler | todo |
 | delay-message drafter | todo |
 | weekly update drafter | todo, nice to have |
@@ -23,6 +24,15 @@ I can see what is left at a glance.
 | demo data + polish | todo |
 
 ## Notes
+
+### 7 Jul, who the promise is for
+
+Added a recipient. Kept is not only for client channels, an agency uses it in its own
+team channels too, and there "Sam, I'll get back to you Sunday" is a promise to Sam,
+not to the room. So the ledger now has a To column. The extractor reads the addressed
+name (or @mention) and returns it, null when nobody is named. Verified on the real
+example: recipient came back "Sam", due the right Sunday. Not resolving names to Slack
+accounts yet, that only matters once we DM the recipient, a plain name displays fine.
 
 ### 7 Jul, tuning the extractor and killing duplicates
 

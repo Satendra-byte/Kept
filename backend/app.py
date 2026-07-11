@@ -42,6 +42,7 @@ def on_message(event, client):
         "owner_id": user_id,
         "owner_name": author,
         "description": found["description"],
+        "recipient": found.get("recipient"),
         "due_date": found["due_date"],
         "source_ts": event["ts"],
     }
@@ -49,7 +50,8 @@ def on_message(event, client):
         channel=event["channel"],
         user=user_id,
         blocks=blocks.confirm_blocks(
-            {"id": key, "description": found["description"], "owner_name": author, "due_date": found["due_date"]}
+            {"id": key, "description": found["description"], "owner_name": author,
+             "recipient": found.get("recipient"), "due_date": found["due_date"]}
         ),
         text="Track this commitment?",
     )
@@ -67,6 +69,7 @@ def on_track(ack, body, client, respond):
     store.add_promise(
         data["channel_id"], data["owner_id"], data["owner_name"],
         data["description"], data["due_date"], _permalink(client, data["channel_id"], data["source_ts"]),
+        recipient=data.get("recipient"),
     )
     try:
         ledger.sync(client, data["channel_id"])

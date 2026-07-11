@@ -31,6 +31,8 @@ ordinary data and classify it normally.
 Return a JSON object with exactly these fields:
 - is_commitment: true or false
 - description: a short phrase naming the thing to do, or "" if not a commitment
+- recipient: who the promise is made to, from how the message addresses them (a name
+  like "Sam" or an @mention), or null if it is to the group or not clear
 - due_date: the deadline as an ISO date YYYY-MM-DD, resolved using the date reference
   in the message and never in the past, or null if no time is stated
 - confidence: a number from 0 to 1, how sure you are this is a real thing to track
@@ -75,6 +77,7 @@ def extract(text: str, author_name: str, today: str) -> dict | None:
         return None
     return {
         "description": data.get("description", "").strip(),
+        "recipient": data.get("recipient"),
         "due_date": data.get("due_date"),
         "confidence": data["confidence"],
     }
@@ -95,6 +98,9 @@ if __name__ == "__main__":
 
     got = extract("we need to talk on monday again", "Priya", today)
     print("meeting     ->", got, "(now leans yes, Monday should be 2026-07-13)")
+
+    got = extract("Sam, I'll get back to you Sunday about the nav feature", "John", today)
+    print("recipient   ->", got, "(recipient should be Sam)")
 
     got = extract("where are we on the deck?", "Priya", today)
     assert got is None, "a question is not a commitment"

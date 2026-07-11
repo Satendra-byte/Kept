@@ -24,20 +24,22 @@ def render(promises: list[dict]) -> str:
         "",
     ]
     if open_:
-        out += ["| Promise | Owner | Due |", "| --- | --- | --- |"]
+        out += ["| Promise | Owner | To | Due |", "| --- | --- | --- | --- |"]
         for p in open_:
             desc = _cell(p["description"])
             if p.get("source_permalink"):
                 desc = f"[{desc}]({p['source_permalink']})"
-            out.append(f"| {desc} | {_cell(p['owner_name'])} | {p['due_date'] or 'no date'} |")
+            to = _cell(p.get("recipient") or "-")
+            out.append(f"| {desc} | {_cell(p['owner_name'])} | {to} | {p['due_date'] or 'no date'} |")
     else:
         out.append("Nothing open. All caught up.")
     out.append("")
 
     if kept:
-        out += [f"## Kept ({len(kept)})", "", "| Promise | Owner | Kept |", "| --- | --- | --- |"]
+        out += [f"## Kept ({len(kept)})", "", "| Promise | Owner | To | Kept |", "| --- | --- | --- | --- |"]
         for p in kept:
-            out.append(f"| {_cell(p['description'])} | {_cell(p['owner_name'])} | {(p['kept_at'] or '')[:10]} |")
+            to = _cell(p.get("recipient") or "-")
+            out.append(f"| {_cell(p['description'])} | {_cell(p['owner_name'])} | {to} | {(p['kept_at'] or '')[:10]} |")
 
     return "\n".join(out)
 
@@ -61,15 +63,17 @@ if __name__ == "__main__":
     # Pure render check, no Slack or db needed: python -m backend.ledger
     rows = [
         {"status": "open", "description": "send the revised deck", "owner_name": "Priya",
-         "due_date": "2026-07-10", "source_permalink": "http://x", "kept_at": None},
+         "recipient": "Raj", "due_date": "2026-07-10", "source_permalink": "http://x", "kept_at": None},
         {"status": "open", "description": "reply with the a | b split", "owner_name": "Sam",
-         "due_date": None, "source_permalink": None, "kept_at": None},
+         "recipient": None, "due_date": None, "source_permalink": None, "kept_at": None},
         {"status": "kept", "description": "send the invoice", "owner_name": "Sachin",
-         "due_date": "2026-07-01", "source_permalink": None, "kept_at": "2026-07-05T09:00:00+00:00"},
+         "recipient": "Priya", "due_date": "2026-07-01", "source_permalink": None, "kept_at": "2026-07-05T09:00:00+00:00"},
     ]
     md = render(rows)
     assert "## Open (2)" in md
     assert "## Kept (1)" in md
+    assert "| Promise | Owner | To | Due |" in md        # recipient column present
+    assert "Raj" in md and "| - |" in md                 # a named recipient, and "-" when none
     assert "[send the revised deck](http://x)" in md   # source link kept
     assert "a \\| b" in md                              # pipe escaped so the table survives
     assert "2026-07-05" in md and "T09" not in md       # kept timestamp trimmed to the day
