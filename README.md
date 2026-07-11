@@ -36,10 +36,11 @@ python -m backend.app
 
 | Path | What |
 | --- | --- |
-| `PRD.md` | Product: problem, users, scope, what success looks like |
-| `ARCHITECTURE.md` | Technical design: components, data model, event flow |
-| `ENGINEERING.md` | Security posture and code standards |
-| `BUILDLOG.md` | What is built, changed, decided. Feature status table |
+| `docs/PRD.md` | Product: problem, users, scope, what success looks like |
+| `docs/ARCHITECTURE.md` | Technical design: components, data model, event flow |
+| `docs/SECURITY.md` | Threat model, controls, and the prompt-injection posture |
+| `BUILDLOG.md` | What is built and changed. Feature status table |
+| `CLAUDE.md` | House rules for the repo |
 | `manifest.json` | Slack app configuration |
 | `backend/` | The app |
 | `mockup/` | Interactive design reference (not shipped) |

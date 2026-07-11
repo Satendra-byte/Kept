@@ -1,7 +1,7 @@
 # Kept, house rules for this repo
 
 Read this before working in the repo. Product and design context lives in
-`PRD.md`, `ARCHITECTURE.md`, `ENGINEERING.md`, and `BUILDLOG.md`.
+`docs/PRD.md`, `docs/ARCHITECTURE.md`, `docs/SECURITY.md`, and `BUILDLOG.md`.
 
 ## Git
 
@@ -23,7 +23,7 @@ Read this before working in the repo. Product and design context lives in
 
 - The LLM only classifies. It has no tools and takes no actions. Every outbound
   action (track, send, update) requires a human tap. Do not add an auto-action
-  path without revisiting `ENGINEERING.md` section 4.
+  path without revisiting `docs/SECURITY.md`.
 - Data minimisation: store only confirmed structured promises (description, owner,
   due date, source link). Never store raw messages or channel history.
 

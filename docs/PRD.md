@@ -61,4 +61,4 @@ tap, and no raw Slack content is stored outside Slack.
 
 Kept detects promises with an LLM plus a human confirm, so precision is a UX
 decision not a model guarantee. It stores only confirmed structured promises,
-never raw messages. See ENGINEERING.md for the full security posture.
+never raw messages. See SECURITY.md for the full security posture.

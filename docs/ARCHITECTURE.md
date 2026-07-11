@@ -1,7 +1,7 @@
 # Kept, architecture
 
-The technical design. Security and standards live in ENGINEERING.md; this doc is
-the component map, the data model, and the event lifecycle.
+The technical design. Security lives in SECURITY.md; this doc is the component map,
+the data model, and the event lifecycle.
 
 ## One-line shape
 
