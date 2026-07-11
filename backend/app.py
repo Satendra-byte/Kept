@@ -93,6 +93,42 @@ def on_edit(ack, respond):
     respond(replace_original=True, text="Editing is coming soon. For now reword it and say it again, or track it as is.")
 
 
+@app.shortcut("track_message")
+def on_track_message(ack, shortcut, client):
+    """Track any message the user picks: their own, a teammate's, a client's. This is
+    how a promise that formed across a conversation, or one someone else made, gets in.
+    The human choosing the message is the confirmation, so there is no second card."""
+    ack()
+    channel_id = shortcut["channel"]["id"]
+    invoker = shortcut["user"]["id"]
+    msg = shortcut["message"]
+    author_id = msg.get("user") or invoker  # owner is who made it, else who tracked it
+    author = _display_name(client, author_id)
+
+    found = extractor.extract(msg.get("text", ""), author, date.today().isoformat())
+    if not found:
+        client.chat_postEphemeral(
+            channel=channel_id, user=invoker,
+            text="I couldn't find a promise in that message, so I left it alone.",
+        )
+        return
+
+    store.upsert_channel(channel_id, _channel_name(client, channel_id))
+    store.add_promise(
+        channel_id, author_id, author, found["description"], found["due_date"],
+        _permalink(client, channel_id, msg["ts"]), recipient=found.get("recipient"),
+    )
+    try:
+        ledger.sync(client, channel_id)
+    except Exception:
+        log.exception("ledger sync failed")
+    due = found["due_date"] or "no date"
+    client.chat_postEphemeral(
+        channel=channel_id, user=invoker,
+        text=f'Tracked. "{found["description"]}" is in the ledger, due {due}.',
+    )
+
+
 def _display_name(client, user_id: str) -> str:
     try:
         p = client.users_info(user=user_id)["user"]

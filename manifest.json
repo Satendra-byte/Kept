@@ -8,7 +8,15 @@
     "bot_user": {
       "display_name": "Kept",
       "always_online": true
-    }
+    },
+    "shortcuts": [
+      {
+        "name": "Track as promise",
+        "type": "message",
+        "callback_id": "track_message",
+        "description": "Add this message to the Kept promise ledger"
+      }
+    ]
   },
   "oauth_config": {
     "scopes": {
