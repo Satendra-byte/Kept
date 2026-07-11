@@ -12,8 +12,8 @@ I can see what is left at a glance.
 | Gemini seam (llm.py) | done |
 | commitment extractor | done |
 | promise store (sqlite) | done |
-| Slack app in the sandbox | todo |
-| confirm card + track flow | todo |
+| Slack app in the sandbox | done |
+| confirm card + track flow | done, works live |
 | ledger canvas | todo |
 | nudge scheduler | todo |
 | delay-message drafter | todo |
@@ -23,6 +23,22 @@ I can see what is left at a glance.
 | demo data + polish | todo |
 
 ## Notes
+
+### 7 Jul, first live run, the loop works
+
+app.py wires it together: Bolt on Socket Mode, hear a message, run the extractor,
+store the promise as pending in memory (keyed by the message ts so the button
+carries a reference not the text), post the private confirm card. Track stores it,
+Ignore drops it.
+
+Ran it in the sandbox and it worked first real try. Posted "i will get back to you
+by friday", got the confirm card, tapped Track, got "Tracked, get back to you is in
+the ledger, due ...". The whole detect to confirm to track path is live.
+
+Known small thing: the LLM resolved "friday" to a Saturday, off by one on the
+weekday. Tighten the extractor prompt later.
+
+Next: make "in the ledger" real with an actual canvas (ledger.py).
 
 ### 7 Jul, the confirm card
 
