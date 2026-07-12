@@ -81,6 +81,22 @@ def reschedule_modal(promise_id) -> dict:
     }
 
 
+def draft_blocks(promise_id, text) -> list:
+    """The drafted client heads-up, shown to the owner with a one-tap Post."""
+    pid = str(promise_id)
+    return [
+        {"type": "section", "text": {"type": "mrkdwn",
+            "text": f"*Draft for the client, your call to send:*\n\n{text}"}},
+        {
+            "type": "actions",
+            "elements": [
+                _btn("Post to channel", "post_draft", pid, primary=True),
+                _btn("Not now", "dismiss_draft", pid),
+            ],
+        },
+    ]
+
+
 if __name__ == "__main__":
     # Pure, no secrets needed. Runs standalone: python -m backend.blocks
     p = {"id": 7, "description": "revised deck", "owner_name": "Sachin",
@@ -101,5 +117,10 @@ if __name__ == "__main__":
     modal = reschedule_modal(7)
     assert modal["callback_id"] == "reschedule_submit" and modal["private_metadata"] == "7"
     assert modal["blocks"][0]["element"]["type"] == "datepicker"
+
+    draft = draft_blocks(7, "Running a bit behind on the deck, you will have it Friday.")
+    dact = [b for b in draft if b["type"] == "actions"][0]["elements"]
+    assert [a["action_id"] for a in dact] == ["post_draft", "dismiss_draft"]
+    assert all(a["value"] == "7" for a in dact)
 
     print("blocks self-check passed")

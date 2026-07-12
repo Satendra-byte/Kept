@@ -17,13 +17,22 @@ I can see what is left at a glance.
 | ledger canvas | done |
 | recipient (to column) | done |
 | nudge scheduler | built, test live |
-| delay-message drafter | todo |
+| delay-message drafter | built, test live |
 | weekly update drafter | todo, nice to have |
 | recall via RTS | todo |
 | agent panel | todo |
 | demo data + polish | todo |
 
 ## Notes
+
+### 12 Jul, the delay-message drafter
+
+drafter.py, the differentiator. When a promise is rescheduled (Need more time), Kept
+asks the LLM for a short honest client heads-up and DMs it to the owner with a Post to
+channel / Not now choice. The LLM only drafts, posting is a human tap, same rule as the
+rest. Verified against Gemini: "Priya, my apologies for the delay with the revised
+deck. I'll have that over to you by July 15." Warm, no grovelling. The draft is held in
+a pending_drafts dict keyed by promise id, the button carries only the id.
 
 ### 7 Jul, nudges
 

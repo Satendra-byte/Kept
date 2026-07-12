@@ -6,7 +6,7 @@ from datetime import date
 from slack_bolt import App
 from slack_bolt.adapter.socket_mode import SocketModeHandler
 
-from backend import blocks, config, extractor, ledger, scheduler, store
+from backend import blocks, config, drafter, extractor, ledger, scheduler, store
 
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger("kept")
@@ -17,6 +17,10 @@ app = App(token=config.SLACK_BOT_TOKEN)
 # this key, never the promise text, so a tampered click cannot inject a promise.
 # In memory on purpose: lost on restart, which is fine for confirmations in flight.
 pending: dict[str, dict] = {}
+
+# Drafted delay messages awaiting a Post tap, keyed by promise id. Button carries only
+# the id; in memory on purpose, a draft in flight is fine to lose on restart.
+pending_drafts: dict[str, dict] = {}
 
 
 @app.event("message")
@@ -159,11 +163,39 @@ def on_reschedule(ack, view, client):
     new_due = view["state"]["values"]["new_due"]["date"]["selected_date"]
     store.reschedule(pid, new_due)
     p = store.get(pid)
-    if p:
-        try:
-            ledger.sync(client, p["channel_id"])
-        except Exception:
-            log.exception("ledger sync failed")
+    if not p:
+        return
+    try:
+        ledger.sync(client, p["channel_id"])
+    except Exception:
+        log.exception("ledger sync failed")
+    # offer the owner a drafted client heads-up about the slip
+    try:
+        text = drafter.draft_delay(p["description"], new_due, p.get("recipient"))
+        pending_drafts[str(pid)] = {"text": text, "channel_id": p["channel_id"]}
+        dm = client.conversations_open(users=p["owner_id"])["channel"]["id"]
+        client.chat_postMessage(channel=dm, blocks=blocks.draft_blocks(str(pid), text),
+                                text="A heads-up you can send the client")
+    except Exception:
+        log.exception("draft delay failed")
+
+
+@app.action("post_draft")
+def on_post_draft(ack, body, client, respond):
+    ack()
+    d = pending_drafts.pop(body["actions"][0]["value"], None)
+    if not d:
+        respond(replace_original=True, text="That draft expired. Reschedule again for a fresh one.")
+        return
+    client.chat_postMessage(channel=d["channel_id"], text=d["text"])
+    respond(replace_original=True, text="Posted to the channel.")
+
+
+@app.action("dismiss_draft")
+def on_dismiss_draft(ack, body, respond):
+    ack()
+    pending_drafts.pop(body["actions"][0]["value"], None)
+    respond(replace_original=True, text="Okay, not sending it.")
 
 
 def _display_name(client, user_id: str) -> str:
