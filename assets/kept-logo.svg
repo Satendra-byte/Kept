@@ -1,0 +1,7 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Kept">
+  <title>Kept</title>
+  <desc>Kept app icon: a cream checkmark resting on a ledger line, on a spruce green rounded square.</desc>
+  <rect width="512" height="512" rx="116" fill="#1e5b47"/>
+  <path d="M163 230 L236 300 L351 165" fill="none" stroke="#f3efe4" stroke-width="46" stroke-linecap="round" stroke-linejoin="round"/>
+  <line x1="162" y1="342" x2="350" y2="342" stroke="#8fb3a3" stroke-width="26" stroke-linecap="round"/>
+</svg>
