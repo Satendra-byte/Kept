@@ -25,10 +25,18 @@ pending_drafts: dict[str, dict] = {}
 
 @app.event("message")
 def on_message(event, client):
-    # only plain messages in channels, never bots, our own, DMs, edits or joins
+    # never bots, our own, edits or joins
     if event.get("bot_id") or event.get("subtype"):
         return
-    if event.get("channel_type") not in ("channel", "group"):
+    ctype = event.get("channel_type")
+    if ctype == "im":
+        # a direct message to Kept is a recall question, answer it live
+        text = event.get("text", "").strip()
+        log.info("DM to Kept: %r", text[:80])
+        if text:
+            client.chat_postMessage(channel=event["channel"], text=recall.answer(text))
+        return
+    if ctype not in ("channel", "group"):
         return
     text = event.get("text", "")
     if len(text) < config.MIN_MESSAGE_CHARS:

@@ -32,10 +32,13 @@ recall.py answers "what did we promise?" from live Slack search. assistant.searc
 the LLM synthesises a short answer and cites only the ones it used. Nothing is stored,
 the search is live each call, so the "no raw Slack content outside Slack" claim holds.
 
-Two gotchas from testing: a trailing "?" in the query makes the last word miss ("deck?"
-is not "deck"), so we strip it; and RTS matches on terms, so recall leans on the topic
-word in the question. Wired to the Bolt Assistant, so questions come in through Kept's
-agent panel and the cited answer posts back there.
+Gotcha from testing: RTS matches on terms and filler drowns out a rare topic word
+("file" matched as "file" but 0 as "what did we promise about the file"), so we search
+the question's content words, dropping "what/did/we/promise/about/the". Surface: wired
+to the Bolt Assistant for the agent panel, but the assistant-thread events would not
+deliver reliably in this sandbox (Agent experience on, reinstalled, still nothing), so
+recall also answers a plain DM to Kept, and that DM path is the one that works. Kept
+replies as "Kept AGENT" with the cited answer.
 
 ### 12 Jul, the delay-message drafter
 

@@ -17,13 +17,23 @@ question, say so plainly. Never invent a promise that is not in the messages."""
 
 MAX_HITS = 8
 
+# Question filler and words like "promise" that people ask with but that never appear
+# in the actual messages. Dropping them leaves the topic terms RTS can match on.
+_STOP = {"what", "whats", "did", "do", "does", "we", "i", "you", "your", "they", "our",
+         "us", "the", "a", "an", "about", "on", "in", "to", "for", "of", "is", "are",
+         "was", "were", "have", "has", "had", "when", "who", "any", "anything", "there",
+         "that", "this", "promise", "promised", "promises", "commit", "committed"}
+
+
+def _terms(question: str) -> str:
+    """The content words of the question, so RTS matches the topic not the filler."""
+    words = [w for w in re.findall(r"[a-z0-9]+", question.lower()) if w not in _STOP]
+    return " ".join(words) or question.replace("?", " ").strip()
+
 
 def answer(question: str) -> str:
-    """Search Slack for the question, then synthesise a cited answer from the hits."""
-    # RTS matches on terms: a trailing "?" makes the last word (e.g. "deck?") miss, so
-    # strip question marks before searching.
-    query = question.replace("?", " ").strip()
-    resp = _search.api_call("assistant.search.context", params={"query": query})
+    """Search Slack for the question's topic terms, then synthesise a cited answer."""
+    resp = _search.api_call("assistant.search.context", params={"query": _terms(question)})
     hits = resp.data.get("results", {}).get("messages", [])[:MAX_HITS]
     if not hits:
         return "I could not find anything relevant in the channels I can see."
@@ -41,4 +51,6 @@ def answer(question: str) -> str:
 
 if __name__ == "__main__":
     # Hits RTS (user token) and the LLM: needs .env and network.
-    print(answer("what did we promise about the deck?"))
+    assert _terms("what did we promise about the file?") == "file"  # filler stripped
+    for q in ("what did we promise about the deck?", "what did we promise about the file?"):
+        print("Q:", q, "\n", answer(q), "\n---")
