@@ -24,6 +24,10 @@ pieces are Gemini (the AI) and a small SQLite file (Kept's private memory).
 | `backend/recall.py` | Live search over Slack via the Real-Time Search API, for recall questions |
 | `backend/scheduler.py` | Checks the store on a timer and fires deadline nudges |
 
+Built so far: `app`, `config`, `llm`, `extractor`, `store`, `ledger`, `blocks`.
+Planned: `scheduler`, `drafter`, `recall`. This doc describes the whole shape; the
+BUILDLOG status table says what is live today.
+
 ## Data model
 
 Kept stores only confirmed, structured promises. Never raw messages, never channel
@@ -41,6 +45,7 @@ promises
   owner_id        TEXT               Slack user id of who owes it
   owner_name      TEXT               display name
   description     TEXT               the deliverable, short
+  recipient       TEXT               who it is promised to, nullable (only when named)
   due_date        TEXT               ISO date (YYYY-MM-DD), nullable
   status          TEXT               'open' or 'kept'
   source_permalink TEXT              link back to the source thread
@@ -60,12 +65,28 @@ Detect and track:
 ```
 message posted in a channel Kept is in
   -> app.py hears it (ignores bots, its own messages, trivial text)
-  -> extractor.py asks the LLM: promise? who? when? confidence?
+  -> extractor.py asks the LLM: promise? who? to whom? when? confidence?
   -> below threshold: drop silently
   -> above threshold: app.py posts an ephemeral confirm card (blocks.py)
   -> user taps Track (the button carries an opaque id, not the promise data)
   -> app.py loads the pending promise, writes it via store.py
   -> ledger.py rewrites the channel canvas
+```
+
+Track any message (the message action, for what auto-detect missed or someone else
+said):
+
+```
+user hovers any message -> ... -> "Track as promise"
+  -> app.py reads that one message's text and its author
+  -> extractor.py pulls the promise (owner = who wrote it, not who tracked it)
+  -> nothing found: ephemeral "no promise here", nothing stored
+  -> found: store.py writes it, ledger.py rewrites the canvas
+```
+
+The human choosing the message is the confirmation, so there is no second card. It
+reads only the hovered message, not the surrounding chat (see "said versus agreed" in
+DECISIONS.md).
 ```
 
 Nudge:

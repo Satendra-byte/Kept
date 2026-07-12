@@ -16,7 +16,7 @@ I can see what is left at a glance.
 | confirm card + track flow | done, works live |
 | ledger canvas | done |
 | recipient (to column) | done |
-| nudge scheduler | todo |
+| nudge scheduler | built, test live |
 | delay-message drafter | todo |
 | weekly update drafter | todo, nice to have |
 | recall via RTS | todo |
@@ -24,6 +24,26 @@ I can see what is left at a glance.
 | demo data + polish | todo |
 
 ## Notes
+
+### 7 Jul, nudges
+
+scheduler.py sweeps the store every minute (NUDGE_INTERVAL_SECONDS) for open promises
+due within the lookahead that we have not nudged, and reminds the owner with the Mark
+kept / Need more time card. Mark kept flips the promise and rewrites the canvas; Need
+more time opens a date picker and reschedules (which clears the nudge flag so the new
+date can nudge again).
+
+Delivery DMs the owner and falls back to an ephemeral in-channel note when the DM scope
+is not live yet. The DM needs im:write (now in the manifest); the fallback needs only
+chat:write. So a nudge always lands, and it upgrades to a real DM once the app is
+reinstalled to grant im:write on the token.
+
+Getting there was a Slack-config saga. The manifest editor kept rejecting the shortcuts
+block ("fix errors, line 12") until interactivity was actually toggled on, the manifest
+declared it but the app's real switch was off. Creating the shortcut through the
+Interactivity UI flipped interactivity on and registered "Track as promise" (Slack
+auto-added the commands scope). im:write went in via the manifest too. manifest.json in
+the repo is now synced to the deployed config.
 
 ### 7 Jul, who the promise is for
 

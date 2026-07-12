@@ -61,6 +61,26 @@ def nudge_blocks(promise: dict) -> list:
     ]
 
 
+def reschedule_modal(promise_id) -> dict:
+    """The 'Need more time' modal: pick a new due date. Carries only the promise id."""
+    return {
+        "type": "modal",
+        "callback_id": "reschedule_submit",
+        "private_metadata": str(promise_id),
+        "title": {"type": "plain_text", "text": "Need more time"},
+        "submit": {"type": "plain_text", "text": "Reschedule"},
+        "close": {"type": "plain_text", "text": "Cancel"},
+        "blocks": [
+            {
+                "type": "input",
+                "block_id": "new_due",
+                "label": {"type": "plain_text", "text": "New due date"},
+                "element": {"type": "datepicker", "action_id": "date"},
+            }
+        ],
+    }
+
+
 if __name__ == "__main__":
     # Pure, no secrets needed. Runs standalone: python -m backend.blocks
     p = {"id": 7, "description": "revised deck", "owner_name": "Sachin",
@@ -73,5 +93,13 @@ if __name__ == "__main__":
     actions = [b for b in built if b["type"] == "actions"][0]["elements"]
     assert [a["action_id"] for a in actions] == ["track_promise", "edit_promise", "ignore_promise"]
     assert all(a["value"] == "7" for a in actions)  # buttons carry only the id, nothing else
+
+    nudge = [b for b in nudge_blocks(p) if b["type"] == "actions"][0]["elements"]
+    assert [a["action_id"] for a in nudge] == ["mark_kept", "need_time"]
+    assert all(a["value"] == "7" for a in nudge)
+
+    modal = reschedule_modal(7)
+    assert modal["callback_id"] == "reschedule_submit" and modal["private_metadata"] == "7"
+    assert modal["blocks"][0]["element"]["type"] == "datepicker"
 
     print("blocks self-check passed")

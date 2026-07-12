@@ -6,7 +6,7 @@ from datetime import date
 from slack_bolt import App
 from slack_bolt.adapter.socket_mode import SocketModeHandler
 
-from backend import blocks, config, extractor, ledger, store
+from backend import blocks, config, extractor, ledger, scheduler, store
 
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger("kept")
@@ -129,6 +129,43 @@ def on_track_message(ack, shortcut, client):
     )
 
 
+@app.action("mark_kept")
+def on_mark_kept(ack, body, client, respond):
+    ack()
+    pid = int(body["actions"][0]["value"])
+    store.mark_kept(pid)
+    p = store.get(pid)
+    if p:
+        try:
+            ledger.sync(client, p["channel_id"])
+        except Exception:
+            log.exception("ledger sync failed")
+    respond(replace_original=True, text="Marked as kept. Nice work.")
+
+
+@app.action("need_time")
+def on_need_time(ack, body, client):
+    ack()
+    client.views_open(
+        trigger_id=body["trigger_id"],
+        view=blocks.reschedule_modal(body["actions"][0]["value"]),
+    )
+
+
+@app.view("reschedule_submit")
+def on_reschedule(ack, view, client):
+    ack()
+    pid = int(view["private_metadata"])
+    new_due = view["state"]["values"]["new_due"]["date"]["selected_date"]
+    store.reschedule(pid, new_due)
+    p = store.get(pid)
+    if p:
+        try:
+            ledger.sync(client, p["channel_id"])
+        except Exception:
+            log.exception("ledger sync failed")
+
+
 def _display_name(client, user_id: str) -> str:
     try:
         p = client.users_info(user=user_id)["user"]
@@ -153,5 +190,6 @@ def _permalink(client, channel_id: str, ts: str):
 
 if __name__ == "__main__":
     store.init_db()
+    scheduler.start(app.client)
     log.info("Kept is starting up, Socket Mode.")
     SocketModeHandler(app, config.SLACK_APP_TOKEN).start()

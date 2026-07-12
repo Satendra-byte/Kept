@@ -27,4 +27,5 @@ LLM_MODEL = "gemini-2.5-flash"
 CONFIDENCE_THRESHOLD = 0.6   # drop extractions below this, silently
 MIN_MESSAGE_CHARS = 15       # skip trivial messages before spending an LLM call
 NUDGE_LOOKAHEAD_HOURS = 24   # nudge when a promise is due within this window
+NUDGE_INTERVAL_SECONDS = 60  # how often the scheduler sweeps for due promises
 DB_PATH = "kept.db"
