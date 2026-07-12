@@ -34,7 +34,12 @@ def on_message(event, client):
         text = event.get("text", "").strip()
         log.info("DM to Kept: %r", text[:80])
         if text:
-            client.chat_postMessage(channel=event["channel"], text=recall.answer(text))
+            try:
+                client.chat_postMessage(channel=event["channel"], text=recall.answer(text))
+            except Exception:
+                log.exception("recall failed")
+                client.chat_postMessage(channel=event["channel"],
+                                        text="I hit a snag searching just now, try me again in a moment.")
         return
     if ctype not in ("channel", "group"):
         return
