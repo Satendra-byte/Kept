@@ -174,7 +174,7 @@ def on_reschedule(ack, view, client):
         text = drafter.draft_delay(p["description"], new_due, p.get("recipient"))
         pending_drafts[str(pid)] = {"text": text, "channel_id": p["channel_id"]}
         dm = client.conversations_open(users=p["owner_id"])["channel"]["id"]
-        client.chat_postMessage(channel=dm, blocks=blocks.draft_blocks(str(pid), text),
+        client.chat_postMessage(channel=dm, blocks=blocks.draft_blocks(str(pid), text, p.get("recipient")),
                                 text="A heads-up you can send the client")
     except Exception:
         log.exception("draft delay failed")

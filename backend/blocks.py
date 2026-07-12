@@ -81,19 +81,22 @@ def reschedule_modal(promise_id) -> dict:
     }
 
 
-def draft_blocks(promise_id, text) -> list:
-    """The drafted client heads-up, shown to the owner with a one-tap Post."""
+def draft_blocks(promise_id, text, recipient=None) -> list:
+    """The drafted heads-up shown to the owner. A promise to one person is theirs to
+    send privately (no auto-post); a promise to the channel gets a one-tap Post."""
     pid = str(promise_id)
+    if recipient:
+        header = f"*Draft for {recipient}, send it to them directly:*"
+        actions = [_btn("Not now", "dismiss_draft", pid)]
+    else:
+        header = "*Draft for the client, your call to send:*"
+        actions = [
+            _btn("Post to channel", "post_draft", pid, primary=True),
+            _btn("Not now", "dismiss_draft", pid),
+        ]
     return [
-        {"type": "section", "text": {"type": "mrkdwn",
-            "text": f"*Draft for the client, your call to send:*\n\n{text}"}},
-        {
-            "type": "actions",
-            "elements": [
-                _btn("Post to channel", "post_draft", pid, primary=True),
-                _btn("Not now", "dismiss_draft", pid),
-            ],
-        },
+        {"type": "section", "text": {"type": "mrkdwn", "text": f"{header}\n\n{text}"}},
+        {"type": "actions", "elements": actions},
     ]
 
 
@@ -120,7 +123,11 @@ if __name__ == "__main__":
 
     draft = draft_blocks(7, "Running a bit behind on the deck, you will have it Friday.")
     dact = [b for b in draft if b["type"] == "actions"][0]["elements"]
-    assert [a["action_id"] for a in dact] == ["post_draft", "dismiss_draft"]
+    assert [a["action_id"] for a in dact] == ["post_draft", "dismiss_draft"]  # channel: one-tap post
     assert all(a["value"] == "7" for a in dact)
+
+    priv = draft_blocks(7, "Hi John, running behind, you will have it Friday.", recipient="John")
+    pact = [b for b in priv if b["type"] == "actions"][0]["elements"]
+    assert [a["action_id"] for a in pact] == ["dismiss_draft"]  # person: owner sends it privately
 
     print("blocks self-check passed")

@@ -28,9 +28,10 @@ I can see what is left at a glance.
 ### 12 Jul, the delay-message drafter
 
 drafter.py, the differentiator. When a promise is rescheduled (Need more time), Kept
-asks the LLM for a short honest client heads-up and DMs it to the owner with a Post to
-channel / Not now choice. The LLM only drafts, posting is a human tap, same rule as the
-rest. Verified against Gemini: "Priya, my apologies for the delay with the revised
+asks the LLM for a short honest heads-up, addressed to the recipient by name, and DMs
+it to the owner. Delivery branches on who it was promised to: a promise to one named
+person is the owner's to send them privately (no public post), a promise to the channel
+gets a one-tap Post to channel. The LLM only drafts, delivery is a human choice. Verified against Gemini: "Priya, my apologies for the delay with the revised
 deck. I'll have that over to you by July 15." Warm, no grovelling. The draft is held in
 a pending_drafts dict keyed by promise id, the button carries only the id.
 
