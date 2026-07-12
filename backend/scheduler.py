@@ -1,7 +1,7 @@
 """The nudge timer. Sweeps the store for promises coming due and privately reminds
 the owner, once each. Runs in a background thread alongside the Bolt app."""
 import logging
-from datetime import date, timedelta
+from datetime import date
 
 from apscheduler.schedulers.background import BackgroundScheduler
 
@@ -11,9 +11,10 @@ log = logging.getLogger("kept.scheduler")
 
 
 def check_and_nudge(client) -> None:
-    """Remind the owner of every promise due within the lookahead we have not nudged."""
-    lookahead_days = max(1, config.NUDGE_LOOKAHEAD_HOURS // 24)
-    cutoff = (date.today() + timedelta(days=lookahead_days)).isoformat()
+    """Remind the owner of every promise due today or overdue that we have not nudged.
+    Nudging on the due day, not before, is deliberate: a reschedule to a later day then
+    does not re-nudge the same day, it waits for that day to arrive."""
+    cutoff = date.today().isoformat()
     due = store.get_due_for_nudge(cutoff)
     if due:
         log.info("nudge sweep: %d due", len(due))
