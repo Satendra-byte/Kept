@@ -3,10 +3,10 @@ Socket Mode, so no public URL is needed. Run: python -m backend.app"""
 import logging
 from datetime import date
 
-from slack_bolt import App
+from slack_bolt import App, Assistant
 from slack_bolt.adapter.socket_mode import SocketModeHandler
 
-from backend import blocks, config, drafter, extractor, ledger, scheduler, store
+from backend import blocks, config, drafter, extractor, ledger, recall, scheduler, store
 
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger("kept")
@@ -196,6 +196,33 @@ def on_dismiss_draft(ack, body, respond):
     ack()
     pending_drafts.pop(body["actions"][0]["value"], None)
     respond(replace_original=True, text="Okay, not sending it.")
+
+
+# The agent panel: users ask "what did we promise?" and Kept answers from live search.
+assistant = Assistant()
+
+
+@assistant.thread_started
+def on_assistant_start(say, set_suggested_prompts):
+    say("Ask me what your team has promised, and I'll pull it live from your channels with source links.")
+    try:
+        set_suggested_prompts(prompts=[
+            {"title": "Promises about the deck", "message": "What did we promise about the deck?"},
+        ])
+    except Exception:
+        log.exception("suggested prompts failed")
+
+
+@assistant.user_message
+def on_assistant_message(payload, say, set_status):
+    try:
+        set_status("searching your channels")
+    except Exception:
+        pass
+    say(recall.answer(payload.get("text", "")))
+
+
+app.assistant(assistant)
 
 
 def _display_name(client, user_id: str) -> str:

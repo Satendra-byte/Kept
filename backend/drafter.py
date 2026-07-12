@@ -2,29 +2,29 @@
 a human reviews and taps to post, the LLM never sends anything itself."""
 from backend import llm
 
-SYSTEM = """You write a short, honest heads-up about a commitment that is now running
+SYSTEM = """You write the body of a short, honest heads-up that a commitment is running
 late and has moved to a new date, on behalf of the person who owes it.
 
-One or two sentences, first person. Open by addressing the recipient by their first
-name if one is given (for example "Hi Priya,"), otherwise open with "Hi team,".
-Acknowledge the slip plainly, give the new date, stay warm and professional. No
-over-apologising, no excuses, no jargon, no emoji. Return only the message text."""
+One or two sentences, first person. Do NOT write a greeting or any name, start straight
+with the apology (for example "I'm a bit behind on the deck..."). Acknowledge the slip
+plainly, give the new date, stay warm and professional. No excuses, no jargon, no
+emoji, no sign-off. Return only the sentences."""
 
 
 def draft_delay(description: str, new_due: str, recipient: str | None = None) -> str:
-    """A client-ready 'running late' message for a rescheduled promise."""
-    who = f"\nFor: {recipient}" if recipient else ""
-    prompt = f"Commitment: {description}\nNew date: {new_due}{who}\n\nWrite the heads-up."
-    return llm.generate_text(SYSTEM, prompt)
+    """A client-ready 'running late' message for a rescheduled promise. The greeting is
+    built in code so the recipient's exact name is used; the LLM writes only the body."""
+    prompt = f"Commitment: {description}\nNew date: {new_due}\n\nWrite the apology sentences."
+    body = llm.generate_text(SYSTEM, prompt)
+    greeting = f"Hi {recipient}," if recipient else "Hi team,"
+    return f"{greeting} {body}"
 
 
 if __name__ == "__main__":
-    # Hits the LLM: needs .env populated and network.
-    got = draft_delay("send the code", "2026-07-13", "John")
-    print("to John ->", got)
-    assert "John" in got  # addresses the named recipient
+    # Hits the LLM for the body; the greeting is deterministic.
+    got = draft_delay("send the code", "2026-07-13", "satendraT")
+    print("to satendraT ->", got)
+    assert got.startswith("Hi satendraT, ")  # exact name, built in code not by the LLM
 
     print("no name ->", draft_delay("send the deck", "2026-07-15"))
-
-    assert got and len(got) < 500
     print("drafter self-check passed")

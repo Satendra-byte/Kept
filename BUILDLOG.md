@@ -19,11 +19,23 @@ I can see what is left at a glance.
 | nudge scheduler | built, test live |
 | delay-message drafter | built, test live |
 | weekly update drafter | todo, nice to have |
-| recall via RTS | todo |
-| agent panel | todo |
+| recall via RTS | done |
+| agent panel | done |
 | demo data + polish | todo |
 
 ## Notes
+
+### 12 Jul, recall and the agent panel
+
+recall.py answers "what did we promise?" from live Slack search. assistant.search.context
+(the Real-Time Search API, on the user token) returns matching messages with permalinks,
+the LLM synthesises a short answer and cites only the ones it used. Nothing is stored,
+the search is live each call, so the "no raw Slack content outside Slack" claim holds.
+
+Two gotchas from testing: a trailing "?" in the query makes the last word miss ("deck?"
+is not "deck"), so we strip it; and RTS matches on terms, so recall leans on the topic
+word in the question. Wired to the Bolt Assistant, so questions come in through Kept's
+agent panel and the cited answer posts back there.
 
 ### 12 Jul, the delay-message drafter
 
