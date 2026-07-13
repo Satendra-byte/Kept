@@ -5,6 +5,12 @@ client, and makes sure it's kept.
 
 Built for the Slack Agent Builder Challenge, 2026. New Slack Agent track.
 
+> **Live for judging.** Kept is running around the clock in the challenge sandbox
+> through the judging window (14 Jul to 6 Aug 2026). No setup needed to try it:
+> in the sandbox, type a promise like "I'll send the report Friday" in any channel
+> Kept is in, and it replies in seconds. The Quickstart below is only for running
+> your own copy.
+
 ![Kept architecture](assets/kept-architecture.png)
 
 ## What it is
