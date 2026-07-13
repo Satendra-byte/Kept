@@ -29,13 +29,13 @@ Once Kept is in a channel, you mostly just talk. Everything below is how you tri
 **In the channel**
 - Make a promise: type `I'll send the report by Monday`. Kept spots it and offers to track it; one tap confirms.
 - Give it a time: `I'll send the numbers today at 5pm`. Kept nudges you at 5pm, not before.
-- Track any message (yours, a teammate's, a client's): hover it, click `...`, choose *Track as promise*, then confirm or adjust the date.
+- Track any message (yours, a teammate's, a client's): hover it, click `...` (More actions), and choose *Track as promise* (under *More message shortcuts* if it is not listed directly), then confirm or adjust the date.
 - `kept digest` drafts a weekly client update from the ledger.
 - `kept stats` shows the kept-rate, who is keeping their promises.
 - `kept help` lists everything.
 
 **The ledger**
-- Open the *Promises* tab at the top of the channel. That canvas is the live record, who owes what, to whom, by when, with an Overdue section. It updates itself on every change.
+- Kept creates the Promise Ledger as a channel canvas the first time a promise is tracked (rename the tab to *Promises*). It shows who owes what, to whom, by when, with an Overdue section, and updates itself on every change.
 
 **DM Kept directly**
 - `my promises` lists your open ones, each with Mark kept, Reschedule, and Edit buttons.
