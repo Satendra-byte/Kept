@@ -16,14 +16,51 @@ I can see what is left at a glance.
 | confirm card + track flow | done, works live |
 | ledger canvas | done |
 | recipient (to column) | done |
-| nudge scheduler | built, test live |
-| delay-message drafter | built, test live |
-| weekly update drafter | todo, nice to have |
-| recall via RTS | done |
-| agent panel | done |
-| demo data + polish | todo |
+| nudge scheduler | done |
+| delay-message drafter | done |
+| weekly update drafter (kept digest) | done |
+| recall via RTS | done, DM path is the live one |
+| agent panel | built, events do not deliver in the sandbox |
+| time-specific deadlines | done |
+| my promises + mark kept anywhere | done |
+| date picker on the message action | done |
+| edit a tracked promise | done |
+| reschedule-by-message | done |
+| overdue escalation | done |
+| kept-rate (kept stats) | done |
+| in-flight persistence (sqlite) | done |
+| timezone-aware nudges | done |
+| welcome on join | built, needs reinstall to activate |
+| offline test suite (pytest) | done, 27 tests |
+| demo data + video | todo |
 
 ## Notes
+
+### 12 Jul, the backlog build
+
+Went through BACKLOG end to end in one pass. Time-specific deadlines: the extractor now
+pulls a clock time ("5pm" -> 17:00), the store keeps due_time, the scheduler fires at
+the time (not just the day) against the workspace timezone, and the ledger shows it.
+My-promises: DM "my promises" (or "kept mine" in a channel) lists your open ones with
+Mark kept / Reschedule / Edit, so you do not wait for a nudge. The message action opens
+a date-picker modal before tracking. @mentions resolve to names. Reschedule-by-message:
+a close-worded message with a new date offers to update the existing row instead of
+duplicating (difflib match, human confirms). Edit is a real modal now. Overdue
+escalation: one sharper re-nudge once a promise blows past.
+
+Robustness: in-flight confirmations and drafts moved from memory dicts into SQLite, so a
+restart no longer drops them. Nudges are timezone-aware. DM recall is gated so "hi" gets
+help, not a search. New value: "kept digest" drafts a weekly client update, "kept stats"
+shows a kept-rate per person.
+
+And a real test suite: tests/test_kept.py, 27 offline tests with the LLM and Slack
+mocked. It earned its keep immediately, catching a bug where a promise nudged after its
+deadline fired a nudge and an escalation in the same sweep. Fixed by skipping escalation
+for anything nudged that same pass.
+
+Two features ship as code but dormant until a reinstall: the welcome-on-join message
+(member_joined_channel added to the manifest) and real agent-panel event delivery. Left
+off to avoid churning the working deployed app before the deadline.
 
 ### 12 Jul, recall and the agent panel
 
