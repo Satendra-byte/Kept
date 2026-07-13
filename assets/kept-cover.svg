@@ -1,0 +1,30 @@
+<svg viewBox="0 0 1200 800" width="1200" height="800" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <rect width="1200" height="800" fill="#faf8f2"/>
+
+  <!-- Kept mark -->
+  <g transform="translate(546,84) scale(0.211)">
+    <rect width="512" height="512" rx="116" fill="#1e5b47"/>
+    <path d="M163 230 L236 300 L351 165" fill="none" stroke="#f3efe4" stroke-width="46" stroke-linecap="round" stroke-linejoin="round"/>
+    <line x1="162" y1="342" x2="350" y2="342" stroke="#8fb3a3" stroke-width="26" stroke-linecap="round"/>
+  </g>
+
+  <text x="600" y="288" font-size="84" font-weight="700" fill="#1e5b47" text-anchor="middle">Kept</text>
+
+  <text x="600" y="338" font-size="24" fill="#1b2620" text-anchor="middle">The Slack agent that catches every promise your team makes,</text>
+  <text x="600" y="371" font-size="24" fill="#1b2620" text-anchor="middle">to a teammate or a client, and makes sure it's kept.</text>
+
+  <!-- feature pills -->
+  <rect x="226" y="430" width="182" height="46" rx="23" fill="#1e5b47"/>
+  <text x="317" y="459" font-size="16" fill="#f3efe4" text-anchor="middle">Catches promises</text>
+  <rect x="432" y="430" width="288" height="46" rx="23" fill="#1e5b47"/>
+  <text x="576" y="459" font-size="16" fill="#f3efe4" text-anchor="middle">Nudges, then drafts the slip</text>
+  <rect x="744" y="430" width="230" height="46" rx="23" fill="#1e5b47"/>
+  <text x="859" y="459" font-size="16" fill="#f3efe4" text-anchor="middle">Recall via live search</text>
+
+  <!-- metrics + claim -->
+  <text x="600" y="566" font-size="21" font-weight="700" fill="#c08a2e" text-anchor="middle">precision 0.94    ·    recall 1.00    ·    3 / 3 injections refused</text>
+  <text x="600" y="600" font-size="18" fill="#556158" text-anchor="middle">Nothing leaves Slack. The ledger is a canvas, recall is live Real-Time Search.</text>
+
+  <line x1="470" y1="660" x2="730" y2="660" stroke="#c9c3b4" stroke-width="1.5"/>
+  <text x="600" y="700" font-size="15" fill="#93a099" text-anchor="middle">Slack Agent Builder Challenge   ·   Slack Bolt · Gemini · Real-Time Search API</text>
+</svg>
