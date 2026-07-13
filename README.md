@@ -73,6 +73,25 @@ python -m backend.store      # per-module smoke checks (store, blocks, ledger ar
 python -m backend.extractor  # extractor, drafter, recall hit the live LLM
 ```
 
+## Evaluation
+
+The commitment detector is measured against a hand-labeled set of 28 messages (clear
+promises, questions, past-tense statements, vague intentions, and prompt injections).
+Run it with `python -m eval.eval_extractor`.
+
+| Metric | Result |
+| --- | --- |
+| Precision | 0.94 |
+| Recall | 1.00 |
+| F1 | 0.97 |
+| Prompt injections refused | 3 / 3 |
+| Due dates correct (caught promises) | 15 / 15 |
+| Recipients correct (caught promises) | 4 / 4 |
+
+It catches every real promise, resolves every date and recipient correctly, and refuses
+every injection. The single false positive is a vague behavioral pledge with no
+deliverable, the borderline case the one-tap confirm is there to absorb.
+
 ## Repo map
 
 | Path | What |
