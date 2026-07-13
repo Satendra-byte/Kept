@@ -1,102 +1,129 @@
-<svg viewBox="0 0 1060 720" width="1060" height="720" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+<svg viewBox="0 0 1080 726" width="1080" height="726" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
   <defs>
-    <marker id="arrow" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
-      <path d="M0,0 L7,3 L0,6 Z" fill="#1e5b47"/>
-    </marker>
-    <marker id="arrowGold" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
-      <path d="M0,0 L7,3 L0,6 Z" fill="#c08a2e"/>
+    <marker id="ar" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L7,3 L0,6 Z" fill="#3a4a42"/>
     </marker>
   </defs>
 
-  <rect width="1060" height="720" fill="#faf8f2"/>
+  <rect width="1080" height="726" fill="#faf8f2"/>
 
-  <!-- title -->
-  <text x="40" y="50" font-size="30" font-weight="700" fill="#1e5b47">Kept</text>
-  <text x="116" y="50" font-size="20" fill="#1b2620">architecture</text>
-  <text x="40" y="78" font-size="14" fill="#556158">Slack-native promise agent · Socket Mode, no public URL · live recall, no external index</text>
+  <!-- header -->
+  <text x="40" y="48" font-size="31" font-weight="700" fill="#1e5b47">Kept</text>
+  <text x="150" y="48" font-size="19" fill="#1b2620">architecture</text>
+  <text x="40" y="72" font-size="13" fill="#556158">Slack-native promise agent · Socket Mode, no public URL · the model reads and drafts, every action is a human tap or a timed reminder</text>
 
-  <!-- Slack workspace panel -->
-  <rect x="40" y="112" width="332" height="504" rx="16" fill="#ffffff" stroke="#8fb3a3" stroke-width="2"/>
-  <text x="60" y="142" font-size="16" font-weight="700" fill="#1e5b47">Slack workspace</text>
+  <!-- ============ LANE 1: DETECT & TRACK ============ -->
+  <text x="40" y="104" font-size="12" font-weight="700" fill="#8a5a2b" letter-spacing="1">DETECT &amp; TRACK</text>
 
-  <g font-family="Helvetica, Arial, sans-serif">
-    <rect x="60" y="158" width="292" height="64" rx="10" fill="#f0ede3"/>
-    <text x="76" y="184" font-size="14.5" font-weight="700" fill="#1b2620"># Channel message</text>
-    <text x="76" y="205" font-size="12" fill="#6a746b">a promise, or a  kept …  command</text>
+  <g>
+    <rect x="40" y="114" width="170" height="76" rx="11" fill="#ffffff" stroke="#8fb3a3" stroke-width="2"/>
+    <text x="58" y="146" font-size="14" font-weight="700" fill="#1b2620">Slack in</text>
+    <text x="58" y="167" font-size="10.5" fill="#6a746b">channel msg ·</text>
+    <text x="58" y="181" font-size="10.5" fill="#6a746b">message action</text>
 
-    <rect x="60" y="230" width="292" height="64" rx="10" fill="#f0ede3"/>
-    <text x="76" y="256" font-size="14.5" font-weight="700" fill="#1b2620">Message action</text>
-    <text x="76" y="277" font-size="12" fill="#6a746b">Track as promise, with a date picker</text>
+    <rect x="240" y="114" width="170" height="76" rx="11" fill="#ffffff" stroke="#c9a24b" stroke-width="2"/>
+    <text x="258" y="142" font-size="14" font-weight="700" fill="#1b2620">Extractor</text>
+    <text x="258" y="160" font-size="10.5" fill="#c08a2e" font-weight="700">Gemini · classify only</text>
+    <text x="258" y="176" font-size="10.5" fill="#6a746b">&lt;message&gt; boundary · conf ≥ 0.6</text>
 
-    <rect x="60" y="302" width="292" height="64" rx="10" fill="#f0ede3"/>
-    <text x="76" y="328" font-size="14.5" font-weight="700" fill="#1b2620">DM Kept</text>
-    <text x="76" y="349" font-size="12" fill="#6a746b">recall + my promises</text>
+    <rect x="440" y="114" width="170" height="76" rx="11" fill="#ffffff" stroke="#8fb3a3" stroke-width="2"/>
+    <text x="458" y="146" font-size="14" font-weight="700" fill="#1b2620">Reschedule?</text>
+    <text x="458" y="167" font-size="10.5" fill="#6a746b">update an existing one</text>
+    <text x="458" y="181" font-size="10.5" fill="#6a746b">(distinctive-word match)</text>
 
-    <rect x="60" y="374" width="292" height="64" rx="10" fill="#e7efe9"/>
-    <text x="76" y="400" font-size="14.5" font-weight="700" fill="#1b2620">Promise Ledger</text>
-    <text x="76" y="421" font-size="12" fill="#6a746b">a live canvas in the channel</text>
+    <rect x="640" y="114" width="170" height="76" rx="11" fill="#1e5b47"/>
+    <text x="658" y="146" font-size="14" font-weight="700" fill="#f3efe4">Confirm</text>
+    <text x="658" y="167" font-size="10.5" fill="#dfe9e3">human taps Track</text>
+    <text x="658" y="181" font-size="10.5" fill="#8fb3a3">nothing tracked without it</text>
 
-    <rect x="60" y="446" width="292" height="64" rx="10" fill="#e7efe9"/>
-    <text x="76" y="472" font-size="14.5" font-weight="700" fill="#1b2620">Owner DM</text>
-    <text x="76" y="493" font-size="12" fill="#6a746b">nudges, escalations, delay drafts</text>
-
-    <text x="76" y="540" font-size="11" fill="#93a099">shaded = Kept writes back here</text>
+    <rect x="840" y="114" width="200" height="76" rx="11" fill="#ffffff" stroke="#1e5b47" stroke-width="2"/>
+    <text x="858" y="146" font-size="14" font-weight="700" fill="#1b2620">Store + Ledger</text>
+    <text x="858" y="167" font-size="10.5" fill="#6a746b">SQLite promise +</text>
+    <text x="858" y="181" font-size="10.5" fill="#6a746b">the canvas, in-channel</text>
   </g>
+  <line x1="212" y1="152" x2="238" y2="152" stroke="#3a4a42" stroke-width="1.8" marker-end="url(#ar)"/>
+  <line x1="412" y1="152" x2="438" y2="152" stroke="#3a4a42" stroke-width="1.8" marker-end="url(#ar)"/>
+  <line x1="612" y1="152" x2="638" y2="152" stroke="#3a4a42" stroke-width="1.8" marker-end="url(#ar)"/>
+  <line x1="812" y1="152" x2="838" y2="152" stroke="#3a4a42" stroke-width="1.8" marker-end="url(#ar)"/>
 
-  <!-- Kept core -->
-  <rect x="452" y="238" width="206" height="226" rx="16" fill="#1e5b47"/>
-  <text x="472" y="272" font-size="19" font-weight="700" fill="#f3efe4">Kept</text>
-  <line x1="472" y1="284" x2="638" y2="284" stroke="#3d7a63" stroke-width="1.5"/>
-  <text x="472" y="310" font-size="13.5" fill="#dfe9e3">· extractor</text>
-  <text x="472" y="334" font-size="13.5" fill="#dfe9e3">· drafter</text>
-  <text x="472" y="358" font-size="13.5" fill="#dfe9e3">· scheduler</text>
-  <text x="472" y="382" font-size="13.5" fill="#dfe9e3">· recall</text>
-  <text x="472" y="406" font-size="13.5" fill="#dfe9e3">· ledger</text>
-  <text x="472" y="440" font-size="11.5" fill="#8fb3a3">Slack Bolt · Socket Mode</text>
+  <!-- store feeds the scheduler -->
+  <line x1="940" y1="192" x2="940" y2="228" stroke="#8fb3a3" stroke-width="1.8" stroke-dasharray="4 3" marker-end="url(#ar)"/>
+  <text x="950" y="216" font-size="10" fill="#7d8a82">drives nudges</text>
 
-  <!-- Gemini -->
-  <rect x="782" y="176" width="252" height="102" rx="12" fill="#ffffff" stroke="#c9a24b" stroke-width="2"/>
-  <text x="800" y="210" font-size="15" font-weight="700" fill="#1b2620">Gemini 2.5 Flash</text>
-  <text x="800" y="233" font-size="12" fill="#6a746b">detects promises, drafts messages</text>
-  <text x="800" y="252" font-size="12" fill="#c08a2e" font-weight="700">never acts on its own</text>
+  <!-- ============ LANE 2: CHASE ============ -->
+  <text x="40" y="266" font-size="12" font-weight="700" fill="#8a5a2b" letter-spacing="1">CHASE THE DEADLINE</text>
 
-  <!-- RTS -->
-  <rect x="782" y="374" width="252" height="102" rx="12" fill="#ffffff" stroke="#c9a24b" stroke-width="2"/>
-  <text x="800" y="408" font-size="15" font-weight="700" fill="#1b2620">Real-Time Search API</text>
-  <text x="800" y="431" font-size="12" fill="#6a746b">live recall from your channels</text>
-  <text x="800" y="450" font-size="12" fill="#6a746b">source-linked citations</text>
+  <g>
+    <rect x="840" y="276" width="200" height="76" rx="11" fill="#ffffff" stroke="#8fb3a3" stroke-width="2"/>
+    <text x="858" y="308" font-size="14" font-weight="700" fill="#1b2620">Scheduler</text>
+    <text x="858" y="329" font-size="10.5" fill="#6a746b">60s sweep, reads the store</text>
+    <text x="858" y="343" font-size="10.5" fill="#6a746b">in the workspace timezone</text>
 
-  <!-- SQLite -->
-  <rect x="430" y="516" width="290" height="96" rx="12" fill="#ffffff" stroke="#8fb3a3" stroke-width="2"/>
-  <text x="450" y="546" font-size="15" font-weight="700" fill="#1b2620">SQLite</text>
-  <text x="450" y="568" font-size="12" fill="#6a746b">confirmed promises, schedule state,</text>
-  <text x="450" y="585" font-size="12" fill="#6a746b">in-flight cards</text>
-  <text x="450" y="603" font-size="12" fill="#1e5b47" font-weight="700">no raw messages, no search index</text>
+    <rect x="640" y="276" width="170" height="76" rx="11" fill="#ffffff" stroke="#8fb3a3" stroke-width="2"/>
+    <text x="658" y="308" font-size="14" font-weight="700" fill="#1b2620">Due?</text>
+    <text x="658" y="329" font-size="10.5" fill="#6a746b">on the day, or at</text>
+    <text x="658" y="343" font-size="10.5" fill="#6a746b">the exact time</text>
 
-  <!-- arrows: Slack <-> Kept -->
-  <line x1="374" y1="322" x2="448" y2="322" stroke="#1e5b47" stroke-width="2" marker-end="url(#arrow)"/>
-  <text x="411" y="314" font-size="11.5" fill="#1e5b47" text-anchor="middle" font-weight="700">1 in</text>
-  <line x1="448" y1="368" x2="374" y2="368" stroke="#1e5b47" stroke-width="2" marker-end="url(#arrow)"/>
-  <text x="411" y="388" font-size="11.5" fill="#1e5b47" text-anchor="middle" font-weight="700">2 out</text>
+    <rect x="440" y="276" width="170" height="76" rx="11" fill="#1e5b47"/>
+    <text x="458" y="308" font-size="14" font-weight="700" fill="#f3efe4">Nudge DM</text>
+    <text x="458" y="329" font-size="10.5" fill="#dfe9e3">Mark kept ·</text>
+    <text x="458" y="343" font-size="10.5" fill="#dfe9e3">Need more time</text>
 
-  <!-- Kept -> Gemini -->
-  <line x1="658" y1="300" x2="778" y2="236" stroke="#c08a2e" stroke-width="2" marker-end="url(#arrowGold)"/>
-  <text x="716" y="272" font-size="11" fill="#c08a2e" text-anchor="middle">detect / draft</text>
+    <rect x="240" y="276" width="170" height="76" rx="11" fill="#ffffff" stroke="#c9a24b" stroke-width="2"/>
+    <text x="258" y="304" font-size="14" font-weight="700" fill="#1b2620">Drafter</text>
+    <text x="258" y="322" font-size="10.5" fill="#c08a2e" font-weight="700">Gemini · drafts only</text>
+    <text x="258" y="338" font-size="10.5" fill="#6a746b">slip → the "running late" note</text>
 
-  <!-- Kept -> RTS -->
-  <line x1="658" y1="392" x2="778" y2="420" stroke="#c08a2e" stroke-width="2" marker-end="url(#arrowGold)"/>
-  <text x="716" y="400" font-size="11" fill="#c08a2e" text-anchor="middle">3 recall</text>
+    <rect x="40" y="276" width="170" height="76" rx="11" fill="#ffffff" stroke="#8fb3a3" stroke-width="2"/>
+    <text x="58" y="308" font-size="14" font-weight="700" fill="#1b2620">Escalate</text>
+    <text x="58" y="329" font-size="10.5" fill="#6a746b">overdue → one</text>
+    <text x="58" y="343" font-size="10.5" fill="#6a746b">sharper re-nudge</text>
+  </g>
+  <line x1="838" y1="314" x2="812" y2="314" stroke="#3a4a42" stroke-width="1.8" marker-end="url(#ar)"/>
+  <line x1="638" y1="314" x2="612" y2="314" stroke="#3a4a42" stroke-width="1.8" marker-end="url(#ar)"/>
+  <line x1="438" y1="314" x2="412" y2="314" stroke="#3a4a42" stroke-width="1.8" marker-end="url(#ar)"/>
+  <line x1="238" y1="314" x2="212" y2="314" stroke="#3a4a42" stroke-width="1.8" marker-end="url(#ar)"/>
+  <text x="525" y="270" font-size="10" fill="#7d8a82" text-anchor="middle">reschedule ↓</text>
 
-  <!-- Kept -> SQLite -->
-  <line x1="565" y1="464" x2="565" y2="514" stroke="#1e5b47" stroke-width="2" marker-end="url(#arrow)"/>
-  <text x="577" y="494" font-size="11" fill="#1e5b47">promises + state</text>
+  <!-- ============ LANE 3: RECALL ============ -->
+  <text x="40" y="428" font-size="12" font-weight="700" fill="#8a5a2b" letter-spacing="1">RECALL</text>
 
-  <!-- callouts -->
-  <rect x="40" y="636" width="490" height="60" rx="12" fill="#1e5b47"/>
-  <text x="60" y="662" font-size="13.5" font-weight="700" fill="#f3efe4">Human-in-the-loop</text>
-  <text x="60" y="682" font-size="12.5" fill="#dfe9e3">the model detects and drafts, never acts. nothing is tracked without a tap.</text>
+  <g>
+    <rect x="40" y="438" width="170" height="76" rx="11" fill="#ffffff" stroke="#8fb3a3" stroke-width="2"/>
+    <text x="58" y="470" font-size="14" font-weight="700" fill="#1b2620">Ask Kept</text>
+    <text x="58" y="491" font-size="10.5" fill="#6a746b">DM or kept command</text>
+    <text x="58" y="505" font-size="10.5" fill="#6a746b">"what did we promise?"</text>
 
-  <rect x="546" y="636" width="474" height="60" rx="12" fill="#1e5b47"/>
-  <text x="566" y="662" font-size="13.5" font-weight="700" fill="#f3efe4">Nothing copied out</text>
-  <text x="566" y="682" font-size="12.5" fill="#dfe9e3">recall is live search, the ledger is a canvas, only structured promises are stored.</text>
+    <rect x="240" y="438" width="170" height="76" rx="11" fill="#ffffff" stroke="#8fb3a3" stroke-width="2"/>
+    <text x="258" y="470" font-size="14" font-weight="700" fill="#1b2620">Terms</text>
+    <text x="258" y="491" font-size="10.5" fill="#6a746b">content words,</text>
+    <text x="258" y="505" font-size="10.5" fill="#6a746b">drop the filler</text>
+
+    <rect x="440" y="438" width="170" height="76" rx="11" fill="#ffffff" stroke="#c9a24b" stroke-width="2"/>
+    <text x="458" y="466" font-size="14" font-weight="700" fill="#1b2620">Real-Time</text>
+    <text x="458" y="484" font-size="12.5" font-weight="700" fill="#1b2620">Search API</text>
+    <text x="458" y="503" font-size="10.5" fill="#c08a2e" font-weight="700">live · no stored index</text>
+
+    <rect x="640" y="438" width="170" height="76" rx="11" fill="#ffffff" stroke="#c9a24b" stroke-width="2"/>
+    <text x="658" y="466" font-size="14" font-weight="700" fill="#1b2620">Synthesise</text>
+    <text x="658" y="484" font-size="10.5" fill="#c08a2e" font-weight="700">Gemini</text>
+    <text x="658" y="503" font-size="10.5" fill="#6a746b">cite only what it used</text>
+
+    <rect x="840" y="438" width="200" height="76" rx="11" fill="#ffffff" stroke="#8fb3a3" stroke-width="2"/>
+    <text x="858" y="470" font-size="14" font-weight="700" fill="#1b2620">Answer</text>
+    <text x="858" y="491" font-size="10.5" fill="#6a746b">reply with links to</text>
+    <text x="858" y="505" font-size="10.5" fill="#6a746b">the source messages</text>
+  </g>
+  <line x1="212" y1="476" x2="238" y2="476" stroke="#3a4a42" stroke-width="1.8" marker-end="url(#ar)"/>
+  <line x1="412" y1="476" x2="438" y2="476" stroke="#3a4a42" stroke-width="1.8" marker-end="url(#ar)"/>
+  <line x1="612" y1="476" x2="638" y2="476" stroke="#3a4a42" stroke-width="1.8" marker-end="url(#ar)"/>
+  <line x1="812" y1="476" x2="838" y2="476" stroke="#3a4a42" stroke-width="1.8" marker-end="url(#ar)"/>
+
+  <!-- ============ SECURITY / STORAGE BAND ============ -->
+  <rect x="40" y="556" width="1000" height="126" rx="14" fill="#1e5b47"/>
+  <text x="62" y="586" font-size="14" font-weight="700" fill="#f3efe4">The rules the whole thing is built on</text>
+  <text x="62" y="612" font-size="12.5" fill="#dfe9e3">• Human-in-the-loop: the model classifies and drafts, it never acts. Nothing is tracked, nudged, or posted without a tap.</text>
+  <text x="62" y="634" font-size="12.5" fill="#dfe9e3">• Injection-safe: an untrusted message is wrapped as data and can only ever be read as a non-promise, never as a command.</text>
+  <text x="62" y="656" font-size="12.5" fill="#dfe9e3">• Nothing leaves Slack: the ledger is a canvas, recall is live search, SQLite stores only structured promises and schedule state.</text>
+  <text x="62" y="674" font-size="12.5" fill="#dfe9e3">• Buttons carry an opaque id, never the promise text, so a tampered click cannot inject data.</text>
 </svg>
