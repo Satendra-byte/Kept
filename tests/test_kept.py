@@ -130,6 +130,43 @@ def test_extract_returns_fields_incl_time(monkeypatch):
     assert got["due_time"] == "17:00" and got["recipient"] == "Priya"
 
 
+# ---- llm retry -------------------------------------------------------------------
+
+def test_llm_retries_transient_then_succeeds(monkeypatch):
+    calls = {"n": 0}
+
+    class Transient(Exception):
+        code = 503                       # a 503-style transient upstream error
+
+    def flaky(model, contents, config):
+        calls["n"] += 1
+        if calls["n"] < 3:
+            raise Transient()
+        return SimpleNamespace(text='{"ok": true}')
+
+    monkeypatch.setattr(llm._client.models, "generate_content", flaky)
+    monkeypatch.setattr(llm.time, "sleep", lambda s: None)   # no real waiting in the test
+    assert llm.generate_json("sys", "prompt") == {"ok": True}
+    assert calls["n"] == 3               # failed twice, third try succeeded
+
+
+def test_llm_does_not_retry_a_hard_error(monkeypatch):
+    calls = {"n": 0}
+
+    class BadRequest(Exception):
+        code = 400                       # not retryable, will not fix itself
+
+    def boom(model, contents, config):
+        calls["n"] += 1
+        raise BadRequest()
+
+    monkeypatch.setattr(llm._client.models, "generate_content", boom)
+    monkeypatch.setattr(llm.time, "sleep", lambda s: None)
+    with pytest.raises(BadRequest):
+        llm.generate_text("sys", "prompt")
+    assert calls["n"] == 1               # raised on the first try, no retry
+
+
 # ---- ledger ----------------------------------------------------------------------
 
 def test_ledger_buckets_and_time_and_escaping():
@@ -273,12 +310,15 @@ def test_resolve_recipient_turns_mention_into_name():
 
 def test_reschedule_match_only_on_close_wording_and_new_date(db):
     store.add_promise("C1", "U1", "Sam", "send the deck", "2026-07-12", None)
+    store.add_promise("C1", "U1", "Sam", "send the numbers", "2026-07-13", None)
     same = {"description": "send the deck", "due_date": "2026-07-12"}
     moved = {"description": "send the deck", "due_date": "2026-07-14"}
     other = {"description": "call the client", "due_date": "2026-07-14"}
+    prefix = {"description": "send the design file", "due_date": "2026-07-19"}
     assert app._reschedule_match("U1", "C1", same) is None        # same date, not a reschedule
-    assert app._reschedule_match("U1", "C1", moved) is not None   # close wording, new date
+    assert app._reschedule_match("U1", "C1", moved) is not None   # same object word, new date
     assert app._reschedule_match("U1", "C1", other) is None       # unrelated wording
+    assert app._reschedule_match("U1", "C1", prefix) is None      # shared "send the" prefix, different object
 
 
 def test_stats_text_formats_kept_rate(db):

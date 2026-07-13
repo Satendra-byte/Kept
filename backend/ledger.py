@@ -41,7 +41,7 @@ def render(promises: list[dict], today: str | None = None) -> str:
     kept = [p for p in promises if p["status"] == "kept"]
 
     out = ["# Promise Ledger", "",
-           "_Kept keeps this current. Every commitment your team makes to the client lives here._", ""]
+           "_Kept keeps this current. Every commitment your team makes, to a teammate or a client, lives here._", ""]
 
     if overdue:
         out += [f"## Overdue ({len(overdue)})", ""] + _rows(overdue, "Due", "due_date") + [""]

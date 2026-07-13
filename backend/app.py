@@ -7,7 +7,6 @@ tampered click cannot inject a promise."""
 import logging
 import re
 from datetime import date
-from difflib import SequenceMatcher
 
 from slack_bolt import App, Assistant
 from slack_bolt.adapter.socket_mode import SocketModeHandler
@@ -433,17 +432,36 @@ def _stats_text(channel_id):
     return "\n".join(lines)
 
 
+# the boilerplate verbs and articles that most promises share; matching on them is what
+# made "send the numbers" false-match "send the design file".
+_RESCHEDULE_STOP = {"send", "get", "call", "finish", "do", "make", "give", "share", "the",
+                    "a", "an", "to", "you", "your", "i", "we", "will", "ll", "by", "on",
+                    "for", "of", "up", "over", "back", "with", "about", "them", "him", "her"}
+
+
+def _key_terms(desc: str) -> set:
+    """The distinctive words of a promise, dropping the shared 'send the ...' boilerplate."""
+    return {w for w in re.findall(r"[a-z0-9]+", desc.lower()) if w not in _RESCHEDULE_STOP}
+
+
 def _reschedule_match(owner_id, channel_id, found):
-    """The nearest open promise this owner already has here that this message is likely
-    just moving to a new date. None unless the wording is close and the date changed."""
+    """The open promise this owner already has here that this message likely just moves to
+    a new date. Matches on the promise's distinctive words (the object, not the verb), so a
+    shared prefix does not false-match, and only when the date actually changes."""
     if not found.get("due_date"):
         return None
-    best, best_ratio = None, 0.0
+    want = _key_terms(found["description"])
+    if not want:
+        return None
+    best, best_overlap = None, 0.0
     for p in store.get_open_by_owner(owner_id, channel_id):
-        ratio = SequenceMatcher(None, p["description"].lower(), found["description"].lower()).ratio()
-        if ratio > best_ratio:
-            best, best_ratio = p, ratio
-    if best and best_ratio >= config.RESCHEDULE_MATCH and best["due_date"] != found["due_date"]:
+        have = _key_terms(p["description"])
+        if not have:
+            continue
+        overlap = len(want & have) / min(len(want), len(have))
+        if overlap > best_overlap:
+            best, best_overlap = p, overlap
+    if best and best_overlap >= config.RESCHEDULE_MATCH and best["due_date"] != found["due_date"]:
         return best
     return None
 

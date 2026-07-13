@@ -162,7 +162,7 @@ def draft_blocks(promise_id, text, recipient=None) -> list:
         header = f"*Draft for {recipient}, send it to them directly:*"
         actions = [_btn("Not now", "dismiss_draft", pid)]
     else:
-        header = "*Draft for the client, your call to send:*"
+        header = "*Draft for the channel, your call to send:*"
         actions = [
             _btn("Post to channel", "post_draft", pid, primary=True),
             _btn("Not now", "dismiss_draft", pid),
