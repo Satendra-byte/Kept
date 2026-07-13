@@ -22,6 +22,29 @@ No separate app, no dashboard to check. The tracking lives where the work alread
 - Answers *what did we promise?* live from the Real-Time Search API, with source links.
 - `kept digest` drafts a weekly client update from the ledger; `kept stats` shows the kept-rate per person. DM `my promises` to settle yours.
 
+## Using Kept
+
+Once Kept is in a channel, you mostly just talk. Everything below is how you trigger each thing.
+
+**In the channel**
+- Make a promise: type `I'll send the report by Monday`. Kept spots it and offers to track it; one tap confirms.
+- Give it a time: `I'll send the numbers today at 5pm`. Kept nudges you at 5pm, not before.
+- Track any message (yours, a teammate's, a client's): hover it, click `...`, choose *Track as promise*, then confirm or adjust the date.
+- `kept digest` drafts a weekly client update from the ledger.
+- `kept stats` shows the kept-rate, who is keeping their promises.
+- `kept help` lists everything.
+
+**The ledger**
+- Open the *Promises* tab at the top of the channel. That canvas is the live record, who owes what, to whom, by when, with an Overdue section. It updates itself on every change.
+
+**DM Kept directly**
+- `my promises` lists your open ones, each with Mark kept, Reschedule, and Edit buttons.
+- `what did we promise about the report?` answers live from the channel, with links to the source messages.
+
+**On its own**
+- Nudges the owner privately when a promise is due, and again, more sharply, if it blows past the deadline.
+- When a promise slips, drafts the honest "running late" message for a human to send. Kept never sends anything itself.
+
 ## Quickstart
 
 Prereqs: Python 3.11+, a Slack developer sandbox, a free Gemini API key.
