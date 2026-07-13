@@ -28,11 +28,14 @@ GREETINGS = {"hi", "hey", "hello", "yo", "sup", "gm", "hiya", "thanks", "thank y
              "ok", "okay", "cool", "nice", "great"}
 
 HELP = (
-    "Here is what I can do:\n"
-    "• I watch this channel and catch promises as they are made, then ask you to confirm with one tap.\n"
-    "• DM me *my promises* to see your open ones, each with buttons to mark kept, reschedule, or edit.\n"
-    "• Ask me *what did we promise about X?* and I answer from the channel with links.\n"
-    "• In a channel, type *kept digest* for a weekly client update, or *kept stats* for the kept-rate."
+    "*Here is what I can do:*\n"
+    "• Catch promises as they are made, to a teammate or a client, and ask you to confirm with one tap. "
+    "I read a time too, so _by 5pm_ nudges at 5pm, not just on the day.\n"
+    "• Track any message from its `...` menu with *Track as promise*, for one I missed or someone else made.\n"
+    "• Keep the *Promises* canvas up to date, and DM me *my promises* to mark kept, reschedule, or edit yours.\n"
+    "• Answer *what did we promise about X?* live from the channel, with links to the source.\n"
+    "• *kept digest* drafts a weekly client update; *kept stats* shows the kept-rate per person.\n"
+    "• On my own: nudge the owner when a promise is due, escalate if it slips, and draft the honest heads-up to send."
 )
 
 
@@ -489,17 +492,19 @@ def _match_keywords(low):
 
 
 def _channel_command(text):
-    """A command only counts in a channel if aimed at Kept: an @mention or a 'kept ' prefix."""
+    """A command only counts in a channel if aimed at Kept. An @mention is an explicit
+    ping, so an unclear one still gets help. A bare 'kept ...' only counts when it names a
+    real command; otherwise it is ordinary chat and falls through to promise detection, so
+    'kept the receipts' is not a command and a promise starting with 'kept' is not eaten."""
     t = text.strip()
     if BOT_USER_ID and t.startswith(f"<@{BOT_USER_ID}>"):
-        t = t[len(f"<@{BOT_USER_ID}>"):].strip()
-    elif t.lower().startswith("kept "):
-        t = t[5:].strip()
-    elif t.lower() == "kept":
-        t = ""
-    else:
-        return None
-    return _match_keywords(t.lower()) or "help"
+        return _match_keywords(t[len(f"<@{BOT_USER_ID}>"):].strip().lower()) or "help"
+    low = t.lower()
+    if low == "kept":
+        return "help"
+    if low.startswith("kept "):
+        return _match_keywords(low[5:].strip())   # a recognised command, else None (chat)
+    return None
 
 
 def _dm_command(text):

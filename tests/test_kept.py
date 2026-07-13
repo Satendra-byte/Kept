@@ -292,6 +292,9 @@ def test_channel_command_needs_prefix(monkeypatch):
     assert app._channel_command("kept digest") == "digest"
     assert app._channel_command("<@BKEPT> stats") == "stats"
     assert app._channel_command("just chatting about the digest") is None   # no prefix, not a command
+    assert app._channel_command("kept the receipts for the vendor") is None  # "kept" + non-command -> chat
+    assert app._channel_command("kept") == "help"                           # bare kept -> help
+    assert app._channel_command("<@BKEPT> what now") == "help"               # explicit ping, unclear -> help
 
 
 def test_dm_command_and_smalltalk():
