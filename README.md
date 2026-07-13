@@ -1,16 +1,26 @@
 # Kept
 
-The Slack agent that catches the promises your team makes to clients, and makes
-sure they are kept.
+The Slack agent that catches every promise your team makes, to a teammate or a
+client, and makes sure it's kept.
 
 Built for the Slack Agent Builder Challenge, 2026. New Slack Agent track.
 
 ## What it is
 
-Kept lives in your client channels. It catches commitments as they are made,
-keeps a Promise Ledger inside Slack as a canvas, nudges owners before deadlines,
-and drafts the message when something slips. No separate app, no dashboard to
-check. The tracking lives where the work already is.
+Kept lives in the channels where work happens. It catches commitments as they are
+made, to teammates or clients, keeps a Promise Ledger inside Slack as a canvas,
+nudges owners when a promise is due, and drafts the message when something slips.
+No separate app, no dashboard to check. The tracking lives where the work already is.
+
+## What it does
+
+- Catches promises automatically and asks the owner to confirm with one tap. The model only ever suggests; nothing is tracked without a human tap.
+- Keeps a Promise Ledger as a channel canvas: who owes what, to whom, by when, with a live Overdue section.
+- Track any message from the `...` menu with *Track as promise*, with a date picker to confirm the deadline.
+- Nudges the owner privately on the due day, or at the exact time for a timed promise ("by 5pm"), and escalates once when one blows past its deadline.
+- Drafts the honest "running late" note when a promise slips, for a human to send.
+- Answers *what did we promise?* live from the Real-Time Search API, with source links.
+- `kept digest` drafts a weekly client update from the ledger; `kept stats` shows the kept-rate per person. DM `my promises` to settle yours.
 
 ## Quickstart
 
@@ -32,6 +42,14 @@ python -m backend.app
 5. In Slack, `/invite @Kept` to a channel, then make a promise like
    "I'll send the deck Friday" and watch the confirm card appear.
 
+## Test
+
+```bash
+python -m pytest -q          # offline suite, mocked LLM and Slack
+python -m backend.store      # per-module smoke checks (store, blocks, ledger are offline)
+python -m backend.extractor  # extractor, drafter, recall hit the live LLM
+```
+
 ## Repo map
 
 | Path | What |
@@ -42,6 +60,7 @@ python -m backend.app
 | `BUILDLOG.md` | What is built and changed. Feature status table |
 | `manifest.json` | Slack app configuration |
 | `backend/` | The app |
+| `tests/` | Offline test suite (mocked LLM and Slack) |
 
 ## Team
 

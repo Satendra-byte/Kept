@@ -27,4 +27,10 @@ LLM_MODEL = "gemini-2.5-flash"
 CONFIDENCE_THRESHOLD = 0.6   # drop extractions below this, silently
 MIN_MESSAGE_CHARS = 15       # skip trivial messages before spending an LLM call
 NUDGE_INTERVAL_SECONDS = 60  # how often the scheduler sweeps for due promises
+NUDGE_LEAD_MINUTES = 0       # for timed promises, nudge this many minutes early (same day only)
+RESCHEDULE_MATCH = 0.6       # how similar a new message must be to count as rescheduling an old promise
 DB_PATH = "kept.db"
+
+# The workspace's wall-clock timezone. Nudges fire against this, not the server's
+# clock, so "due 5pm" means 5pm where the team is. Override with KEPT_TZ in .env.
+TIMEZONE = os.environ.get("KEPT_TZ", "Europe/London")

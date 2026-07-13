@@ -1,0 +1,101 @@
+<svg viewBox="0 0 1040 690" width="1040" height="690" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="arrow" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L7,3 L0,6 Z" fill="#1e5b47"/>
+    </marker>
+    <marker id="arrowGold" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L7,3 L0,6 Z" fill="#c08a2e"/>
+    </marker>
+  </defs>
+
+  <rect width="1040" height="690" fill="#faf8f2"/>
+
+  <!-- title -->
+  <text x="40" y="50" font-size="30" font-weight="700" fill="#1e5b47">Kept</text>
+  <text x="116" y="50" font-size="20" fill="#1b2620">architecture</text>
+  <text x="40" y="78" font-size="14" fill="#556158">Slack-native promise agent · Socket Mode, no public URL · the ledger lives in the channel, not on our servers</text>
+
+  <!-- Slack workspace panel -->
+  <rect x="40" y="116" width="300" height="474" rx="16" fill="#ffffff" stroke="#8fb3a3" stroke-width="2"/>
+  <text x="60" y="146" font-size="16" font-weight="700" fill="#1e5b47">Slack workspace</text>
+
+  <g>
+    <rect x="60" y="162" width="260" height="66" rx="10" fill="#f0ede3"/>
+    <text x="76" y="190" font-size="14.5" font-weight="700" fill="#1b2620"># Channel messages</text>
+    <text x="76" y="211" font-size="12" fill="#6a746b">where promises get made</text>
+  </g>
+  <g>
+    <rect x="60" y="240" width="260" height="66" rx="10" fill="#f0ede3"/>
+    <text x="76" y="268" font-size="14.5" font-weight="700" fill="#1b2620">Promise Ledger — canvas</text>
+    <text x="76" y="289" font-size="12" fill="#6a746b">the live record, in-channel</text>
+  </g>
+  <g>
+    <rect x="60" y="318" width="260" height="66" rx="10" fill="#f0ede3"/>
+    <text x="76" y="346" font-size="14.5" font-weight="700" fill="#1b2620">Owner DM</text>
+    <text x="76" y="367" font-size="12" fill="#6a746b">nudges + recall answers</text>
+  </g>
+  <g>
+    <rect x="60" y="396" width="260" height="66" rx="10" fill="#f0ede3"/>
+    <text x="76" y="424" font-size="14.5" font-weight="700" fill="#1b2620">Message action</text>
+    <text x="76" y="445" font-size="12" fill="#6a746b">"Track as promise" on any message</text>
+  </g>
+  <g>
+    <rect x="60" y="474" width="260" height="66" rx="10" fill="#f0ede3"/>
+    <text x="76" y="502" font-size="14.5" font-weight="700" fill="#1b2620">Agent panel + DM recall</text>
+    <text x="76" y="523" font-size="12" fill="#6a746b">"what did we promise?"</text>
+  </g>
+
+  <!-- Kept core -->
+  <rect x="470" y="250" width="200" height="192" rx="16" fill="#1e5b47"/>
+  <text x="490" y="284" font-size="19" font-weight="700" fill="#f3efe4">Kept</text>
+  <line x1="490" y1="296" x2="650" y2="296" stroke="#3d7a63" stroke-width="1.5"/>
+  <text x="490" y="322" font-size="14" fill="#dfe9e3">· extractor</text>
+  <text x="490" y="348" font-size="14" fill="#dfe9e3">· confirm gate</text>
+  <text x="490" y="374" font-size="14" fill="#dfe9e3">· scheduler</text>
+  <text x="490" y="400" font-size="14" fill="#dfe9e3">· recall</text>
+  <text x="490" y="428" font-size="11.5" fill="#8fb3a3">Slack Bolt · Socket Mode</text>
+
+  <!-- Gemini -->
+  <rect x="760" y="188" width="250" height="92" rx="12" fill="#ffffff" stroke="#c9a24b" stroke-width="2"/>
+  <text x="778" y="222" font-size="15" font-weight="700" fill="#1b2620">Gemini 2.5 Flash</text>
+  <text x="778" y="245" font-size="12" fill="#6a746b">classifies &amp; drafts</text>
+  <text x="778" y="263" font-size="12" fill="#c08a2e" font-weight="700">never acts on its own</text>
+
+  <!-- RTS -->
+  <rect x="760" y="380" width="250" height="92" rx="12" fill="#ffffff" stroke="#c9a24b" stroke-width="2"/>
+  <text x="778" y="414" font-size="15" font-weight="700" fill="#1b2620">Real-Time Search API</text>
+  <text x="778" y="437" font-size="12" fill="#6a746b">live recall from your channels</text>
+  <text x="778" y="455" font-size="12" fill="#6a746b">source-linked citations</text>
+
+  <!-- SQLite -->
+  <rect x="470" y="500" width="200" height="78" rx="12" fill="#ffffff" stroke="#8fb3a3" stroke-width="2"/>
+  <text x="490" y="532" font-size="15" font-weight="700" fill="#1b2620">SQLite</text>
+  <text x="490" y="555" font-size="12" fill="#6a746b">ids + timestamps only</text>
+
+  <!-- arrows: Slack <-> Kept -->
+  <line x1="344" y1="330" x2="466" y2="330" stroke="#1e5b47" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="405" y="322" font-size="11.5" fill="#1e5b47" text-anchor="middle" font-weight="700">1 promise in</text>
+  <line x1="466" y1="372" x2="344" y2="372" stroke="#1e5b47" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="405" y="390" font-size="11.5" fill="#1e5b47" text-anchor="middle">2 confirm · ledger · nudge</text>
+
+  <!-- Kept -> Gemini -->
+  <line x1="670" y1="300" x2="756" y2="248" stroke="#c08a2e" stroke-width="2" marker-end="url(#arrowGold)"/>
+  <text x="712" y="278" font-size="11" fill="#c08a2e" text-anchor="middle">classify / draft</text>
+
+  <!-- Kept -> RTS -->
+  <line x1="670" y1="392" x2="756" y2="420" stroke="#c08a2e" stroke-width="2" marker-end="url(#arrowGold)"/>
+  <text x="712" y="404" font-size="11" fill="#c08a2e" text-anchor="middle">3 recall</text>
+
+  <!-- Kept -> SQLite -->
+  <line x1="570" y1="442" x2="570" y2="498" stroke="#1e5b47" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="582" y="476" font-size="11" fill="#1e5b47">schedule metadata</text>
+
+  <!-- callouts -->
+  <rect x="40" y="612" width="475" height="58" rx="12" fill="#1e5b47"/>
+  <text x="60" y="638" font-size="13.5" font-weight="700" fill="#f3efe4">Human-in-the-loop</text>
+  <text x="60" y="658" font-size="12.5" fill="#dfe9e3">detects and drafts, never acts. nothing is tracked without a tap.</text>
+
+  <rect x="535" y="612" width="475" height="58" rx="12" fill="#1e5b47"/>
+  <text x="555" y="638" font-size="13.5" font-weight="700" fill="#f3efe4">Canvas-as-database</text>
+  <text x="555" y="658" font-size="12.5" fill="#dfe9e3">the ledger lives in the channel; the server keeps only ids + timestamps.</text>
+</svg>

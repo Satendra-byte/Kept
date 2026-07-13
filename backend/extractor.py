@@ -35,6 +35,9 @@ Return a JSON object with exactly these fields:
   like "Sam" or an @mention), or null if it is to the group or not clear
 - due_date: the deadline as an ISO date YYYY-MM-DD, resolved using the date reference
   in the message and never in the past, or null if no time is stated
+- due_time: the clock time of the deadline as 24-hour HH:MM, ONLY if the message states
+  a time of day ("5pm" is "17:00", "by 9" in the morning is "09:00", "noon" is "12:00"),
+  else null. A day with no clock time is null, not "00:00".
 - confidence: a number from 0 to 1, how sure you are this is a real thing to track
 
 If there is a concrete action but you are unsure, a mid confidence yes is fine."""
@@ -79,6 +82,7 @@ def extract(text: str, author_name: str, today: str) -> dict | None:
         "description": data.get("description", "").strip(),
         "recipient": data.get("recipient"),
         "due_date": data.get("due_date"),
+        "due_time": data.get("due_time"),
         "confidence": data["confidence"],
     }
 
@@ -101,6 +105,9 @@ if __name__ == "__main__":
 
     got = extract("Sam, I'll get back to you Sunday about the nav feature", "John", today)
     print("recipient   ->", got, "(recipient should be Sam)")
+
+    got = extract("I'll ping you the numbers tomorrow at 5pm", "Sachin", today)
+    print("timed       ->", got, "(due_time should be 17:00)")
 
     got = extract("where are we on the deck?", "Priya", today)
     assert got is None, "a question is not a commitment"
