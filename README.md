@@ -5,6 +5,8 @@ client, and makes sure it's kept.
 
 Built for the Slack Agent Builder Challenge, 2026. New Slack Agent track.
 
+![Kept architecture](assets/kept-architecture.png)
+
 ## What it is
 
 Kept lives in the channels where work happens. It catches commitments as they are
